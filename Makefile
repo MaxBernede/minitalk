@@ -6,41 +6,37 @@
 #    By: mbernede <mbernede@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2023/02/02 22:47:37 by mbernede      #+#    #+#                  #
-#    Updated: 2023/02/02 22:49:40 by mbernede      ########   odam.nl          #
+#    Updated: 2023/02/05 16:39:05 by mbernede      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
-NAME := 
+SERVER	:= server
 
-SRCS =  client.c\
-		main_client.c\
-		server_main.c\
-		server.c\
+CLIENT	:= client
+
+SRV 	=	server.c
+
+CLT	=	client.c
+
+UTL		=	utils.c
 
 CC = cc
 
-FLAGS = -Wall -Wextra -Werror
+#FLAGS = -Wall -Wextra -Werror
 
-OBJ_DIR	:=		./objs/
-SRC_DIR :=		./srcs/
+all : $(SERVER) $(CLIENT)
 
-OBJ 	:= 		$(addprefix ${OBJ_DIR},${SRCS:.c=.o})
+${SERVER}:
+	@$(CC) $(FLAGS) -o $(SERVER) $(SRV) $(UTL)
 
-BON		:=		$(addprefix ${OBJ_DIR},${BONUS:.c=.o})
+${CLIENT}:
+	@$(CC) $(FLAGS) -o $(CLIENT) $(CLT) $(UTL)
 
-${NAME}:	${OBJ}
-	@$(CC) -o $@ $^ $(LIBA)
-
-all : $(NAME)
-
-${OBJ_DIR}%.o:	${SRC_DIR}%.c $(LIBH)
-	@${CC} ${CFLAGS} -o $@ -c $<
 
 clean: 
-	@${RM} ${OBJ}
+	@${RM} ${CLIENT} $(SERVER)
 
 fclean: 	clean
-	@${RM} ${NAME}
 
 re :	fclean all
 
