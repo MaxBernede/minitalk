@@ -13,14 +13,9 @@
 #include "./minitalk.h"
 #include <stdio.h>
 
-
-void    message(int pid, char *str)
+void	message(int pid, char *str, int i, int b)
 {
-	int	i;
-	int	b;
-
-	i = 0;
-	usleep(800);
+	usleep(500);
 	while (str[i])
 	{
 		b = 8;
@@ -30,22 +25,7 @@ void    message(int pid, char *str)
 				kill(pid, SIGUSR1);
 			else
 				kill(pid, SIGUSR2);
-			usleep(200);
-		}
-		++i;
-	}
-	i = 0;
-	str = "\n";
-	while (str[i])
-	{
-		b = 8;
-		while (b--)
-		{
-			if (str[i] >> b & 1)
-				kill(pid, SIGUSR1);
-			else
-				kill(pid, SIGUSR2);
-			usleep(200);
+			usleep(400);
 		}
 		++i;
 	}
@@ -61,6 +41,7 @@ int main(int argc, char **argv)
 	pid = ft_atoi_overflow(argv[1]);
 	if (!pid)
 		return (ft_error());
-	message(pid, argv[2]);
+	message(pid, argv[2], 0, 8);
+	message(pid, "\n", 0, 8);
 	return (0);
 }

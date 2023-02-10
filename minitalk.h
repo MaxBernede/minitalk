@@ -16,6 +16,13 @@
 #include <unistd.h>
 #include <signal.h>
 
+typedef struct s_serv
+{
+	int pid;
+	int cli_pid;
+	int	div;
+} t_ser_val;
+
 void	ft_putstr_fd(char *s, int fd);
 void	ft_putnbr_fd(int n, int fd);
 int     ft_atoi_overflow(char *str);

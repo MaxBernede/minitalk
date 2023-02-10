@@ -13,40 +13,62 @@
 #include <stdio.h>
 #include "./minitalk.h"
 
-unsigned int binary;
+int binary;
 
 void	show_pid(int pid)
 {
-	write(1, "PID is ", 9);
+	write(1, "PID is ", 8);
 	ft_putnbr_fd(pid, 1);
 	write(1, "\n", 1);
 }
 
-void	f_sig1()
+void	handle_1(int sig, siginfo_t *siginfo, void *context)
 {
 	binary = 1;
+	//kill(siginfo->si_pid, SIGUSR1);
 }
 
-void	f_sig2()
+void	handle_2(int sig, siginfo_t *siginfo, void *context)
 {
 	binary = 0;
+	//kill(siginfo->si_pid, SIGUSR1);
+}
+
+int	divnb(int div, int i)
+{
+	if (i == 0)
+		div = 128;
+	else
+		div /= 2;
+	return (div);
+}
+
+void	valinit(t_ser_val *s_val)
+{
+	s_val->cli_pid = 0;
+	s_val->pid = getpid();
+	s_val->div = divnb(s_val->div, 0);
 }
 
 int main(int argc, char **argv)
 {
-	int pid;
-	unsigned int c;
-	unsigned int i;
-	unsigned int div;
 
+	int c;
+	int i;
+	struct sigaction sa1;
+	struct sigaction sa2;
+	t_ser_val	s_val;
+
+	valinit(&s_val);
+	sa1.sa_sigaction = handle_1;
+	sa2.sa_sigaction = handle_2;
+	sa1.sa_flags = SA_SIGINFO;
+	sa2.sa_flags = SA_SIGINFO;
 	i = 0;
 	c = 0;
-	pid = getpid();
-	show_pid(pid);
-	signal(SIGUSR1, f_sig1);
-	signal(SIGUSR2, f_sig2);
-
-	div = 128;
+	show_pid(s_val.pid);
+	sigaction(SIGUSR1, &sa1, NULL);
+	sigaction(SIGUSR2, &sa2, NULL);
 	while (1)
 	{
 		pause();
@@ -54,7 +76,7 @@ int main(int argc, char **argv)
 		if (i < 8)
 		{
 			if (binary)
-				c += div;
+				c += s_val.div;
 		}
 		else
 		{
@@ -64,18 +86,7 @@ int main(int argc, char **argv)
 			i = 0;
 			c = 0;
 		}
-		if (i == 0)
-			div = 128;
-		else
-			div /= 2;
+		s_val.div = divnb(s_val.div, i);
 	}
 	return (0);
 }
-
-
-
-
-//	struct sigaction sa;
-
-	// sa.sa_handler = &handle;
-	// sigaction(SIGTSTP, &sa, NULL);
