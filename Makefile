@@ -6,7 +6,7 @@
 #    By: mbernede <mbernede@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2023/02/02 22:47:37 by mbernede      #+#    #+#                  #
-#    Updated: 2023/02/05 16:39:05 by mbernede      ########   odam.nl          #
+#    Updated: 2023/03/03 13:09:03 by mbernede      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,7 +22,7 @@ UTL		=	utils.c
 
 CC = cc
 
-#FLAGS = -Wall -Wextra -Werror
+FLAGS = -Wall -Wextra -Werror
 
 all : $(SERVER) $(CLIENT)
 

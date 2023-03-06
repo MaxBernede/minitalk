@@ -6,42 +6,64 @@
 /*   By: mbernede <mbernede@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/02/02 22:46:53 by mbernede      #+#    #+#                 */
-/*   Updated: 2023/02/05 22:06:52 by mbernede      ########   odam.nl         */
+/*   Updated: 2023/03/06 16:27:14 by mbernede      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./minitalk.h"
 #include <stdio.h>
 
-void	message(int pid, char *str, int i, int b)
+int	g_binary;
+
+void	f_sig1(void)
 {
-	usleep(500);
+	g_binary = 1;
+}
+
+void	f_sig2(void)
+{
+	g_binary = 0;
+}
+
+int	message(int pid, char *str, int i, int b)
+{
 	while (str[i])
 	{
 		b = 8;
 		while (b--)
 		{
 			if (str[i] >> b & 1)
-				kill(pid, SIGUSR1);
+			{
+				if (kill(pid, SIGUSR1))
+					return (ft_error());
+			}
 			else
-				kill(pid, SIGUSR2);
-			usleep(400);
+			{
+				if (kill(pid, SIGUSR2))
+					return (ft_error());
+			}
+			while (!g_binary)
+				;
+			g_binary = 0;
 		}
 		++i;
 	}
+	return (0);
 }
 
-int main(int argc, char **argv)
+int	main(int argc, char **argv)
 {
 	int	pid;
-	int	i;
 
+	signal(SIGUSR1, f_sig1);
 	if (argc != 3)
 		return (ft_error());
-	pid = ft_atoi_overflow(argv[1]);
-	if (!pid)
+	if (ft_atoi_overflow(argv[1], &pid))
 		return (ft_error());
-	message(pid, argv[2], 0, 8);
+	g_binary = 0;
+	if (message(pid, argv[2], 0, 8))
+		return (0);
 	message(pid, "\n", 0, 8);
+	write(1, "received\n", 9);
 	return (0);
 }
