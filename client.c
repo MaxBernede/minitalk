@@ -6,7 +6,7 @@
 /*   By: mbernede <mbernede@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/02/02 22:46:53 by mbernede      #+#    #+#                 */
-/*   Updated: 2023/03/06 16:27:14 by mbernede      ########   odam.nl         */
+/*   Updated: 2023/03/07 15:09:07 by mbernede      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,10 @@
 
 int	g_binary;
 
-void	f_sig1(void)
+void	f_sig1(int sig)
 {
+	(void)sig;
 	g_binary = 1;
-}
-
-void	f_sig2(void)
-{
-	g_binary = 0;
 }
 
 int	message(int pid, char *str, int i, int b)
@@ -64,6 +60,5 @@ int	main(int argc, char **argv)
 	if (message(pid, argv[2], 0, 8))
 		return (0);
 	message(pid, "\n", 0, 8);
-	write(1, "received\n", 9);
 	return (0);
 }
