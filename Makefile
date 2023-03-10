@@ -6,7 +6,7 @@
 #    By: mbernede <mbernede@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2023/02/02 22:47:37 by mbernede      #+#    #+#                  #
-#    Updated: 2023/03/03 13:09:03 by mbernede      ########   odam.nl          #
+#    Updated: 2023/03/10 16:20:14 by mbernede      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,10 +26,10 @@ FLAGS = -Wall -Wextra -Werror
 
 all : $(SERVER) $(CLIENT)
 
-${SERVER}:
+${SERVER}: $(SRV) $(UTL)
 	@$(CC) $(FLAGS) -o $(SERVER) $(SRV) $(UTL)
 
-${CLIENT}:
+${CLIENT}: $(CLT) $(UTL)
 	@$(CC) $(FLAGS) -o $(CLIENT) $(CLT) $(UTL)
 
 

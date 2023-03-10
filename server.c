@@ -6,7 +6,7 @@
 /*   By: mbernede <mbernede@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/02/02 22:46:54 by mbernede      #+#    #+#                 */
-/*   Updated: 2023/03/06 16:27:43 by mbernede      ########   odam.nl         */
+/*   Updated: 2023/03/10 16:20:04 by mbernede      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int	main(void)
 	int					pid;
 
 	pid = getpid();
-	write(1, "PID is ", 8);
+	write(1, "PID is ", 7);
 	ft_putnbr_fd(pid, 1);
 	write(1, "\n", 1);
 	sigemptyset(&sa.sa_mask);
